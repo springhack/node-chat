@@ -1,0 +1,32 @@
+{
+  "name": "node-chat",
+  "version": "1.0.0",
+  "description": "A node.js chat tools.",
+  "main": "app.js",
+  "scripts": {
+    "start": "webpack-dev-server --hot --progress --colors",
+    "build": "webpack --progress --colors"
+  },
+  "keywords": [
+    "SpringHack"
+  ],
+  "author": "SpringHack",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "latest",
+    "babel-loader": "latest",
+    "babel-plugin-transform-react-jsx": "^6.8.0",
+    "babel-preset-es2015": "latest",
+    "babel-preset-react": "latest",
+    "css-loader": "^0.23.1",
+    "express": "^4.14.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "style-loader": "^0.13.1",
+    "webpack": "latest"
+  },
+  "dependencies": {
+    "lodash": "latest",
+    "react-kendo": "latest"
+  }
+}
