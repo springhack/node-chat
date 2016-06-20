@@ -10,17 +10,16 @@ class App extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			tree :
-{
-  "module": "react-ui-tree",
-  "children": [{
-    "collapsed": true,
-    "module": "dist",
-    "children": [{
-      "module": "node.js"
-    }]
-  }]
-}
+			tree : {
+			  "module": "react-ui-tree",
+			  "children": [{
+			    "collapsed": true,
+			    "module": "dist",
+			    "children": [{
+			      "module": "node.js"
+			    }]
+			  }]
+			}
 		};
 	}
 	renderNode(node) {
