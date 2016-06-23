@@ -20,13 +20,17 @@
     "babel-preset-react": "latest",
     "css-loader": "^0.23.1",
     "express": "^4.14.0",
+    "jquery": "^3.0.0",
     "react": "latest",
     "react-dom": "latest",
+    "socket.io": "^1.4.6",
     "style-loader": "^0.13.1",
     "webpack": "latest"
   },
   "dependencies": {
     "lodash": "latest",
-    "react-kendo": "latest"
+    "mysql": "^2.11.1",
+    "react-kendo": "latest",
+    "socket.io-client": "^1.4.6"
   }
 }
