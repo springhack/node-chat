@@ -2,11 +2,11 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: {
-    entry1: './src/index.js'
+    client : './src/client.js'
   },
   output: {
     path: './dist',
-    filename: 'bundle.js'
+    filename: 'bundle.[name].js'
   },
   module: {
     loaders: [{
@@ -17,6 +17,10 @@ module.exports = {
     {
       test: /\.css$/,
       loader: 'style-loader!css-loader'
+    },
+    {
+      test: /\.less$/,
+      loader: 'style-loader!css-loader!less-loader'
     }]
   }
 };

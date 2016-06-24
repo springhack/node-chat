@@ -26,7 +26,7 @@ db.connect(function (err) {
 });
 
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, '../dist')));
 
 io.on('connection', function (socket) {
 
