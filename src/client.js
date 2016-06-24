@@ -19,17 +19,7 @@ socket.on('err', function (data) {
 	console.log('Error: ' + data.error);
 });
 
-function SendMsg(msg)
-{
-	socket.emit('say', {from : Session.user, content : msg});
-}
-
-function UpdateHistory(data)
-{
-	console.log(data);
-}
-
-ReactDOM.render(<App />, document.getElementById('main'));
+ReactDOM.render(<App socket={socket} />, document.getElementById('main'));
 
 
 import './style.css';

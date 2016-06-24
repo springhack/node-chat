@@ -9,8 +9,8 @@ import Send from './Send.jsx';
 
 export default class App extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
 	active : null,
 	tree : {
@@ -25,7 +25,9 @@ export default class App extends React.Component {
 	      "module": "sau"
 	    }]
 	  }]
-	}
+	},
+       history : {},
+       socket : props.socket
     };
   }
 
@@ -41,14 +43,24 @@ export default class App extends React.Component {
   }
 
   onClickNode(node) {
-    console.log(this);
     this.setState({
       active: node
     });
   }
 
   onSend(str) {
-    SendMsg(str);
+    var history = this.state.history;
+    var to = this.state.active.module;
+    if (!history[to])
+    	history[to] = [];
+    history[to].push({
+    	user : 'me',
+	content : str
+    });
+    this.state.socket.emit('say', {from : 'root', to : this.state.active.module, content : str});
+    this.setState({
+    	history : history
+    });
   }
 
   render() {
@@ -64,9 +76,9 @@ export default class App extends React.Component {
           />
         </div>
         <div className="inspector">
-		<Title title={this.active == null ? 'Connect everything' : this.active.module} />
-		<History />
-		<Send send={this.onSend} />
+		<Title title={this.state.active == null ? 'Connect everything' : this.state.active.module} />
+		<History history={this.state.active == null ? [] : this.state.history[this.state.active.module]} />
+		<Send send={this.onSend.bind(this)} />
         </div>
       </div>
     );

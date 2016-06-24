@@ -91,15 +91,7 @@
 		console.log('Error: ' + data.error);
 	});
 
-	function SendMsg(msg) {
-		socket.emit('say', { from: Session.user, content: msg });
-	}
-
-	function UpdateHistory(data) {
-		console.log(data);
-	}
-
-	_reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById('main'));
+	_reactDom2.default.render(_react2.default.createElement(_App2.default, { socket: socket }), document.getElementById('main'));
 
 /***/ },
 /* 1 */
@@ -28488,10 +28480,10 @@
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
 
-	  function App() {
+	  function App(props) {
 	    _classCallCheck(this, App);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
 
 	    _this.state = {
 	      active: null,
@@ -28506,7 +28498,9 @@
 	            "module": "sau"
 	          }]
 	        }]
-	      }
+	      },
+	      history: {},
+	      socket: props.socket
 	    };
 	    return _this;
 	  }
@@ -28526,7 +28520,6 @@
 	  }, {
 	    key: 'onClickNode',
 	    value: function onClickNode(node) {
-	      console.log(this);
 	      this.setState({
 	        active: node
 	      });
@@ -28534,7 +28527,17 @@
 	  }, {
 	    key: 'onSend',
 	    value: function onSend(str) {
-	      SendMsg(str);
+	      var history = this.state.history;
+	      var to = this.state.active.module;
+	      if (!history[to]) history[to] = [];
+	      history[to].push({
+	        user: 'me',
+	        content: str
+	      });
+	      this.state.socket.emit('say', { from: 'root', to: this.state.active.module, content: str });
+	      this.setState({
+	        history: history
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -28556,9 +28559,9 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'inspector' },
-	          _react2.default.createElement(_Title2.default, { title: this.active == null ? 'Connect everything' : this.active.module }),
-	          _react2.default.createElement(_History2.default, null),
-	          _react2.default.createElement(_Send2.default, { send: this.onSend })
+	          _react2.default.createElement(_Title2.default, { title: this.state.active == null ? 'Connect everything' : this.state.active.module }),
+	          _react2.default.createElement(_History2.default, { history: this.state.active == null ? [] : this.state.history[this.state.active.module] }),
+	          _react2.default.createElement(_Send2.default, { send: this.onSend.bind(this) })
 	        )
 	      );
 	    }
@@ -28606,12 +28609,7 @@
 		function Title(props) {
 			_classCallCheck(this, Title);
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Title).call(this, props));
-
-			_this.state = {
-				title: _this.props.title
-			};
-			return _this;
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(Title).call(this, props));
 		}
 
 		_createClass(Title, [{
@@ -28620,7 +28618,7 @@
 				return _react2.default.createElement(
 					'div',
 					null,
-					this.state.title
+					this.props.title
 				);
 			}
 		}]);
@@ -28663,18 +28661,25 @@
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(History).call(this, props));
 
 			_this.state = {
-				history: [],
 				styleL: {
-					float: 'left',
-					border: '1px solid',
-					paddind: '2px',
-					borderRadius: '2px'
+					display: 'inline-block',
+					backgroundColor: '#CAFF70',
+					padding: '5px',
+					paddind: '7px',
+					borderRadius: '7px'
 				},
 				styleR: {
-					float: 'right',
-					border: '1px solid',
-					paddind: '2px',
-					borderRadius: '2px'
+					display: 'inline-block',
+					backgroundColor: '#FFBBFF',
+					padding: '5px',
+					paddind: '7px',
+					borderRadius: '7px'
+				},
+				parL: {
+					textAlign: 'left'
+				},
+				parR: {
+					textAlign: 'right'
 				}
 			};
 			return _this;
@@ -28684,19 +28689,24 @@
 			key: 'render',
 			value: function render() {
 				var doms = [];
-				for (var i in this.state.history) {
+				for (var i in this.props.history) {
 					doms.push(_react2.default.createElement(
 						'div',
-						{ style: this.state.history[i].user == 'me' ? this.state.styleR : this.state.styleL },
+						{ key: 'dom_' + i, style: this.props.history[i].user == 'me' ? this.state.parR : this.state.parL },
 						_react2.default.createElement(
 							'div',
-							null,
-							this.state.history[i].user
-						),
-						_react2.default.createElement(
-							'div',
-							null,
-							this.state.history[i].content
+							{ style: this.props.history[i].user == 'me' ? this.state.styleR : this.state.styleL },
+							_react2.default.createElement(
+								'div',
+								null,
+								this.props.history[i].user,
+								':'
+							),
+							_react2.default.createElement(
+								'div',
+								null,
+								this.props.history[i].content
+							)
 						)
 					));
 				}return _react2.default.createElement(
