@@ -74,22 +74,22 @@
 
 	_reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById('main'));
 
-	var socket = _socket2.default.connect('ws://127.0.0.1:3000');
+	var socket = _socket2.default.connect(); //'ws://127.0.0.1:3000');
 
 	window.socket = socket;
 
 	console.log(socket.id);
 
 	socket.on('rec', function (data) {
-		console.log(data.user, data.content);
+		console.log(data.from, data.content);
 	});
 
-	socket.on('msg', function (data) {
-		console.log(data);
+	socket.on('log', function (data) {
+		console.log('Login: ' + data.result);
 	});
 
 	socket.on('err', function (data) {
-		console.log(data.error);
+		console.log('Error: ' + data.error);
 	});
 
 /***/ },
