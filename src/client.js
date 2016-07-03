@@ -4,6 +4,9 @@ import Tree from 'react-ui-tree';
 import io from 'socket.io-client';
 import App from './App.jsx';
 
+var main = document.createElement('div');
+document.body.appendChild(main);
+
 var Session = {
 	user : ''
 };
@@ -19,7 +22,7 @@ socket.on('err', function (data) {
 	console.log('Error: ' + data.error);
 });
 
-ReactDOM.render(<App socket={socket} />, document.getElementById('main'));
+ReactDOM.render(<App socket={socket} />, main);
 
 
 import './style.css';
